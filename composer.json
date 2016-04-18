@@ -1,0 +1,25 @@
+{
+    "name": "livecms/support",
+    "description": "The LiveCMS Support package.",
+    "license": "MIT",
+    "homepage": "https://github.com/livecms/liveCMS",
+    "support": {
+        "issues": "https://github.com/livecms/LiveCMS/issues",
+        "source": "https://github.com/livecms/LiveCMS"
+    },
+    "authors": [
+        {
+            "name": "Mokhamad Rofiudin",
+            "email": "mokh.rofiudin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "intervention/image": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "LiveCMS\\Support\\": ""
+        }
+    }
+}
