@@ -21,6 +21,5 @@
         "psr-4": {
             "LiveCMS\\Support\\": ""
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
