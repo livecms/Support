@@ -37,9 +37,9 @@ class LiveCMSSupportServiceProvider extends ServiceProvider
             $this->mergeConfigFrom(__DIR__.'/../config/livecms.php', 'livecms');
         }
 
-        LiveCMS\Emailer\EmailerServiceProvider::shouldRegistered();
-        LiveCMS\FileGrabber\FileGrabberServiceProvider::shouldRegistered();
-        LiveCMS\Thumbnailer\ThumbnailerServiceProvider::shouldRegistered();
-        LiveCMS\Uploader\UploaderServiceProvider::shouldRegistered();
+        \LiveCMS\Support\Emailer\EmailerServiceProvider::shouldRegistered();
+        \LiveCMS\Support\FileGrabber\FileGrabberServiceProvider::shouldRegistered();
+        \LiveCMS\Support\Thumbnailer\ThumbnailerServiceProvider::shouldRegistered();
+        \LiveCMS\Support\Uploader\UploaderServiceProvider::shouldRegistered();
     }
 }
