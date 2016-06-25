@@ -31,8 +31,6 @@ class Uploader
     {
         $this->request = request();
 
-        $this->with(config('livecms.uploader', []));
-
         $this->with($config);
     }
 

@@ -20,8 +20,9 @@ class ThumbnailerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('thumbnailer', function () {
-            return new Thumbnailer;
+        $this->app->singleton('thumbnailer', function ($app) {
+            $config = $app['config']->get('livecms.thumbnailer');
+            return new Thumbnailer($config);
         });
     }
 

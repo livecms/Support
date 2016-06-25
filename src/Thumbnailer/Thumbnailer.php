@@ -34,7 +34,7 @@ class Thumbnailer
     {
         $defaults = collect(get_object_vars($this))->except('file')->toArray();
 
-        $configs = array_replace($defaults, config('suitcommerce.thumbnailer'), $config);
+        $configs = array_replace($defaults, $config);
 
         foreach ($configs as $key => $value) {
             if (property_exists($this, $key)) {

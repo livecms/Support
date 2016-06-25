@@ -20,8 +20,9 @@ class UploaderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('uploader', function () {
-            return new Uploader;
+        $this->app->singleton('uploader', function ($app) {
+            $config = $this->app['config']->get('livecms.uploader') ?: [];
+            return new Uploader($config);
         });
     }
 
