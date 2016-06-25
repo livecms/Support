@@ -119,7 +119,7 @@ trait ThumbnailerTrait
             $file = isset($this->attributes[$attribute]) ? $this->attributes[$attribute] : '';
         }
 
-        return base_path($this->baseFolder.'/'.$this->getImageFolder($attribute).'/'.$file);
+        return base_path($this->baseFolder.DIRECTORY_SEPARATOR.$this->getImageFolder($attribute).DIRECTORY_SEPARATOR.$file);
     }
 
     protected function getImageAttributes()
@@ -162,8 +162,6 @@ trait ThumbnailerTrait
         $imagePath = $this->getImagePath($attribute);
 
         $oldThumbnail = $this->getImagePath($attribute, $savedOldThumbnail);
-
-        info($savedOldThumbnail);
 
         if (!file_exists($oldThumbnail) || $this->isDirty($attribute)) {
 
@@ -222,7 +220,7 @@ trait ThumbnailerTrait
             //     $imageDir = '';
             // }
             
-            $imagePath = $this->getImagePath($attribute); 
+            $imagePath = $this->getImagePath($attribute);
             
             $array[$attribute] = url(substr($imagePath, strlen(public_path())));
             

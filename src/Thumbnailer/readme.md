@@ -1,10 +1,10 @@
 THUMBNAILER
 
-Live CMS / thumbnailer 
+suitcommerce / thumbnailer 
 
-LiveCMS/Thumbnailer/Thumbnailer
-LiveCMS/Thumbnailer/ModelThumbnailerTrait
-LiveCMS/Thumbnailer/Contracts/ModelThumbnailerInterface
+SuitCommerce/Thumbnailer/Thumbnailer
+SuitCommerce/Thumbnailer/ModelThumbnailerTrait
+SuitCommerce/Thumbnailer/Contracts/ModelThumbnailerInterface
 
 use case :
 

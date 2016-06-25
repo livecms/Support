@@ -2,7 +2,7 @@
 
 namespace LiveCMS\Support\Thumbnailer\Facades;
 
-class Thumbnailer extends \Illuminate\Support\Facades\Facade
+class Thumb extends \Illuminate\Support\Facades\Facade
 {
     /**
      * {@inheritDoc}

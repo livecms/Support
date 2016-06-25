@@ -2,19 +2,24 @@
 
 namespace LiveCMS\Support\Thumbnailer;
 
-use Image;
+use Intervention\Image\ImageManager;
+use LiveCMS\Support\File\DummyFile;
 use LiveCMS\Support\Thumbnailer\ImageFile;
 
 class Thumbnailer
 {
+    protected $image;
+
     protected $file;
 
     protected $prefix = '_thumb_';
 
     protected $size = '300x300';
 
-    public function __contruct($file = null, $config = [])
+    public function __contruct(ImageManager $image, $file = null, $config = [])
     {
+        $this->image = $image;
+
         $this->file = $file;
 
         $this->with($config);
@@ -77,7 +82,7 @@ class Thumbnailer
         // read the image
         try {
         
-            $image = Image::make($this->file);
+            $image = $this->image->make($this->file);
         
         } catch (\Exception $e) {
             
@@ -135,7 +140,7 @@ class Thumbnailer
 
         $extension = pathinfo($file, PATHINFO_EXTENSION); // jpg
 
-        $thumbnail = $file->getPath().'/'.$filename. $this->prefix . $size .'.'. $extension;
+        $thumbnail = $file->getPath().DIRECTORY_SEPARATOR.$filename. $this->prefix . $size .'.'. $extension;
 
         return $thumbnail;
     }
