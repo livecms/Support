@@ -4,7 +4,7 @@ namespace LiveCMS\Support\Uploader\Contracts;
 
 interface ModelUploaderInterface
 {
-    public function getFields();
+    public function getFileFields();
 
     public function setFile($field, $file);
 

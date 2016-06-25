@@ -2,6 +2,7 @@
 
 namespace LiveCMS\Support\Thumbnailer;
 
+use Intervention\Image\ImageManager;
 use LiveCMS\Support\ServiceProvider;
 
 class ThumbnailerServiceProvider extends ServiceProvider
@@ -21,8 +22,14 @@ class ThumbnailerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('thumbnailer', function ($app) {
+            $imageConfig = $app['config']->get('image') ?: $app['config']->get('livecms.image');
+            $image = new ImageManager($imageConfig);
+
             $config = $app['config']->get('livecms.thumbnailer');
-            return new Thumbnailer($config);
+            $thumbnailer = new Thumbnailer(null, $config);
+            $thumbnailer->setImage($image);
+
+            return $thumbnailer;
         });
     }
 

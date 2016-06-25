@@ -15,7 +15,7 @@ trait ModelUploaderTrait
      * Get Fields that contains files
      * @return array of fields
      */
-    public function getFields()
+    public function getFileFields()
     {
         $fields = $this->getFiles();
         
@@ -81,14 +81,14 @@ trait ModelUploaderTrait
      */
     protected function getBaseFolder()
     {
-        return property_exists($this, 'baseFolder') ? $this->baseFolder : '';
+        return property_exists($this, 'baseFolder') ? $this->baseFolder : app('uploader')->getBaseFolder();
     }
 
     protected function getFiles()
     {
         return
                 property_exists($this, 'files') ? $this->files :
-                    (property_exists($this, 'imageAttributes') ? $this->imageAttributes : []);
+                    (property_exists($this, 'images') ? $this->images : []);
     }
 
     /**

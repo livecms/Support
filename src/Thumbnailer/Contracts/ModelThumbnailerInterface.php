@@ -1,8 +1,8 @@
 <?php
 
-namespace LiveCMS\Support\Thumbnailer\Contracts\Model;
+namespace LiveCMS\Support\Thumbnailer\Contracts;
 
-interface ImageThumbnailerInterface
+interface ModelThumbnailerInterface
 {
     public function deleteThumbnailFromImage($filepath);
 

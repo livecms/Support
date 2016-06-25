@@ -43,7 +43,7 @@ class Uploader
     {
         $defaults = collect(get_object_vars($this))->except('request', 'file', 'uploaded', 'failed')->toArray();
 
-        $configs = array_replace($defaults, $config);
+        $configs = array_merge_recursive($defaults, $config);
 
         foreach ($configs as $key => $value) {
             if (property_exists($this, $key)) {
@@ -267,7 +267,7 @@ class Uploader
      */
     public function model(Model $model, $directSaveModel = true)
     {
-        $this->files($model->getFields(), function ($file, $field) use ($model, $directSaveModel) {
+        $this->files($model->getFileFields(), function ($file, $field) use ($model, $directSaveModel) {
             if (!$this->request->hasFile($field)) {
                 return;
             }

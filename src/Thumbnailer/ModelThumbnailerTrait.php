@@ -1,6 +1,6 @@
 <?php
 
-namespace LiveCMS\Support\Thumbnailer\Model;
+namespace LiveCMS\Support\Thumbnailer;
 
 use Image;
 use Thumb;
@@ -20,9 +20,11 @@ use Thumb;
  * protected baseFolder = 'public/uploads'
  */
 
-trait ThumbnailerTrait
+trait ModelThumbnailerTrait
 {
     protected static $oldThumbnail;
+
+    protected $imageAttributes = [];
 
     // every images must created the thumbnail
     public static function bootThumbnailerTrait()
@@ -84,9 +86,14 @@ trait ThumbnailerTrait
     public function deleteThumbnailFromImage($filepath)
     {
         // read style
-        foreach (array_merge($this->thumbnailStyle, [$this->defThumbnailName => '']) as $value) {
+        foreach (array_merge($this->getThumbnailStyle(), [app('thumbnailer')->getDefThumbnailName() => '']) as $value) {
             @unlink($this->locateThumbnail($filepath, $value));
         }
+    }
+
+    protected function getThumbnailStyle()
+    {
+        return property_exists($this, 'thumbnailStyle') ? $this->thumbnailStyle : [];
     }
 
     /**
@@ -106,7 +113,7 @@ trait ThumbnailerTrait
 
     protected function getImageFolder($attribute)
     {
-        $imageAttributes = $this->imageAttributes;
+        $imageAttributes = $this->images;
         $folder = !$this->isAssoc($imageAttributes) ? '' :
             (isset($imageAttributes[$attribute]) ? $imageAttributes[$attribute] : '');
         
@@ -119,12 +126,16 @@ trait ThumbnailerTrait
             $file = isset($this->attributes[$attribute]) ? $this->attributes[$attribute] : '';
         }
 
-        return base_path($this->baseFolder.DIRECTORY_SEPARATOR.$this->getImageFolder($attribute).DIRECTORY_SEPARATOR.$file);
+        $baseFolder = property_exists($this, 'baseFolder') ? $this->baseFolder : app('uploader')->getBaseFolder();
+
+        $imageFolder = ($folder = $this->getImageFolder($attribute)) != '' ? DIRECTORY_SEPARATOR.$folder : $folder;
+
+        return base_path($baseFolder.$imageFolder.DIRECTORY_SEPARATOR.$file);
     }
 
     protected function getImageAttributes()
     {
-        $imageAttributes = $this->imageAttributes;
+        $imageAttributes = $this->images;
 
         if (!$this->isAssoc($imageAttributes)) {
             $imageAttributes = array_flip($imageAttributes);
@@ -147,7 +158,7 @@ trait ThumbnailerTrait
 
     protected function getThumbnailName($file, $size = '')
     {
-        return pathinfo(basename($file), PATHINFO_FILENAME).$this->defThumbnailName.$size;
+        return pathinfo(basename($file), PATHINFO_FILENAME).app('thumbnailer')->getDefThumbnailName().$size;
     }
 
     protected function getExtension($file)
@@ -175,15 +186,17 @@ trait ThumbnailerTrait
             return;
         }
 
+        $defSize = property_exists($this, 'size') ? $this->size : app('thumbnailer')->getSize();
+
         // set default thumbnail
-        $size = $size == null ? implode('x', [$this->defWidth, $this->defHeight]) : $size;
+        $size = $size ?: $defSize;
 
         $thumbnail = $this->getThumbnailName($imagePath); // file._thumbnail
 
         Thumb::make($imagePath, $size)->rename($thumbnail);
 
         // read style
-        foreach ($this->thumbnailStyle as $size) {
+        foreach ($this->getThumbnailStyle() as $size) {
             $name = $this->getThumbnailName($imagePath, $size);
             Thumb::make($imagePath, $size)->rename($name);
         }
@@ -201,7 +214,7 @@ trait ThumbnailerTrait
         $expl = explode('.', $imagePath);
         $extension = array_pop($expl);
 
-        $thumbnail = implode('.', $expl). $this->defThumbnailName . $size .'.'. $extension;
+        $thumbnail = implode('.', $expl). app('thumbnailer')->getDefThumbnailName() . $size .'.'. $extension;
 
         return $thumbnail;
     }
@@ -213,12 +226,12 @@ trait ThumbnailerTrait
         $array = [];
 
 
-        foreach ($this->imageAttributes as $attribute => $imageDir) {
+        foreach ($this->images as $attribute => $imageDir) {
             
-            // if (is_numeric($attribute)) {
-            //     $attribute = $imageDir;
-            //     $imageDir = '';
-            // }
+            if (is_numeric($attribute)) {
+                $attribute = $imageDir;
+                $imageDir = '';
+            }
             
             $imagePath = $this->getImagePath($attribute);
             
@@ -228,7 +241,7 @@ trait ThumbnailerTrait
                 continue;
             }
 
-            $style = array_merge($this->thumbnailStyle, [ltrim($this->defThumbnailName, '_') => null]);
+            $style = array_merge($this->getThumbnailStyle(), [ltrim(app('thumbnailer')->getDefThumbnailName(), '_') => null]);
 
             foreach ($style as $name => $size) {
 

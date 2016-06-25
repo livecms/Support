@@ -8,7 +8,7 @@ use LiveCMS\Support\Thumbnailer\ImageFile;
 
 class Thumbnailer
 {
-    protected $image;
+    protected static $image;
 
     protected $file;
 
@@ -16,13 +16,27 @@ class Thumbnailer
 
     protected $size = '300x300';
 
-    public function __contruct(ImageManager $image, $file = null, $config = [])
-    {
-        $this->image = $image;
+    protected $defThumbnailName = '_thumbnail';
+    
+    protected $defWidth = 480;
 
+    protected $defHeight = 360;
+
+    public function __contruct($file = null, $config = [])
+    {
         $this->file = $file;
 
         $this->with($config);
+    }
+
+    public function setImage(ImageManager $image)
+    {
+        static::$image = $image;
+    }
+
+    public function getImage()
+    {
+        return static::$image;
     }
 
     /**
@@ -57,7 +71,7 @@ class Thumbnailer
         $size = ($size == null) ? $this->size : $size;
 
 
-        $this->file = new ImageFile($file);
+        $this->file = new ImageFile($file, $this->getImage());
 
         $thumbSize = (array) $size;
 
@@ -70,6 +84,26 @@ class Thumbnailer
         return !is_array($size) ? $thumbs[0] : collect($thumbs);
 
     }
+
+    public function getDefThumbnailName()
+    {
+        return $this->defThumbnailName;
+    }
+    
+    public function getDefWidth()
+    {
+        return $this->defWidth;
+    }
+
+    public function getDefHeight()
+    {
+        return $this->defHeight;
+    }
+
+    public function getSize()
+    {
+        return $this->size;
+    }
     
     /**
      * Generate Thubnail
@@ -81,8 +115,8 @@ class Thumbnailer
     {
         // read the image
         try {
-        
-            $image = $this->image->make($this->file);
+            
+            $image = $this->getImage()->make($this->file);
         
         } catch (\Exception $e) {
             
@@ -94,7 +128,7 @@ class Thumbnailer
         if (file_exists($thumbnail)) {
             
             if (!$override) {
-                return new ImageFile($thumbnail);
+                return new ImageFile($thumbnail, $this->getImage());
             }
             
             @unlink($thumbnail);
@@ -106,7 +140,7 @@ class Thumbnailer
 
         if (!is_numeric($width) && !is_numeric($height)) {
 
-            return new ImageFile($this->file);
+            return new ImageFile($this, $this->getImage()->file);
         }
 
         if (!is_numeric($width)) {
@@ -122,7 +156,7 @@ class Thumbnailer
             $image->fit($width, $height)->save($thumbnail);
         }
 
-        return new ImageFile($thumbnail);
+        return new ImageFile($thumbnail, $this->getImage());
     }
 
     /**

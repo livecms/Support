@@ -1,10 +1,15 @@
 <?php
 
 return [
+    
+    'image' => [
+    
+        'driver' => 'gd',
+    ],
 
     'thumbnailer' => [
 
-        // 'thumb' => '_thumb_',
+        // 'defThumbnailName' => '_thumbnail',
 
         // 'size' => '300x300',
     ],
