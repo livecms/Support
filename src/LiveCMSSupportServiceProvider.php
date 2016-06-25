@@ -22,7 +22,9 @@ class LiveCMSSupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        LiveCMS\Emailer\EmailerServiceProvider::shouldBooted();
+        $this->bootPublish();
+        
+        \LiveCMS\Support\Emailer\EmailerServiceProvider::shouldBooted();
     }
 
 
