@@ -3,7 +3,7 @@
 namespace LiveCMS\Support\Uploader;
 
 use LiveCMS\Support\File\File as FileSystem;
-use LiveCMS\Support\Uploader\Upload as Uploader;
+use LiveCMS\Support\Uploader\Uploader;
 
 class File extends FileSystem
 {
