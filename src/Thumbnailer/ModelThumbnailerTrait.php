@@ -27,7 +27,7 @@ trait ModelThumbnailerTrait
     protected $imageAttributes = [];
 
     // every images must created the thumbnail
-    public static function bootThumbnailerTrait()
+    public static function bootModelThumbnailerTrait()
     {
         static::saving(function ($model) {
             $model::$oldThumbnail = $model->getOriginal();
