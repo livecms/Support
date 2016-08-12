@@ -2,8 +2,6 @@
 
 namespace LiveCMS\Support\Uploader;
 
-use LiveCMS\Support\File\File;
-
 trait ModelUploaderTrait
 {
     // protected $baseFolder = 'public/uploads'
