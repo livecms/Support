@@ -174,7 +174,7 @@ trait ModelThumbnailerTrait
 
         $oldThumbnail = $this->getImagePath($attribute, $savedOldThumbnail);
 
-        if (!file_exists($oldThumbnail) && $this->isDirty($attribute)) {
+        if (file_exists($oldThumbnail) && $this->isDirty($attribute)) {
 
             @unlink($oldThumbnail);
 
