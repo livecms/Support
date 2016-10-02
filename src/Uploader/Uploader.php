@@ -42,8 +42,7 @@ class Uploader
     public function with($config = [])
     {
         $defaults = collect(get_object_vars($this))->except('request', 'file', 'uploaded', 'failed')->toArray();
-
-        $configs = array_merge_recursive($defaults, $config);
+        $configs = array_replace_recursive($defaults, $config);
 
         foreach ($configs as $key => $value) {
             if (property_exists($this, $key)) {
