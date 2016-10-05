@@ -55,13 +55,7 @@ trait ModelThumbnailerTrait
             return $array[$key];
         }
         
-        $get = parent::getAttribute($key);
-        
-        if ($get != null) {
-            return $get;
-        }
-
-        return null;
+        return parent::getAttribute($key);
     }
 
     public function deleteThumbnails()
@@ -233,6 +227,10 @@ trait ModelThumbnailerTrait
                 $imageDir = '';
             }
             
+            if (!$this->getOriginal($attribute)) {
+                continue;
+            }
+
             $imagePath = $this->getImagePath($attribute);
             
             $array[$attribute] = url(substr($imagePath, strlen(public_path())));
