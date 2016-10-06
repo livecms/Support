@@ -54,8 +54,13 @@ trait ModelThumbnailerTrait
         if (array_key_exists($key, $array)) {
             return $array[$key];
         }
-        
-        return parent::getAttribute($key);
+
+        $get = parent::getAttribute($key);
+        if ($get != null) {
+            return $get;
+        }
+
+        return null;
     }
 
     public function deleteThumbnails()
